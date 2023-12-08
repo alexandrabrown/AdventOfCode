@@ -1,2 +1,0 @@
-Game 3: 1 red, 10 blue, 3 green; 8 blue, 2 red, 4 green; 2 red, 5 green, 9 blue
-Game 4: 13 red, 1 blue, 3 green; 8 blue, 2 red, 4 green; 2 red, 5 green, 9 blue
