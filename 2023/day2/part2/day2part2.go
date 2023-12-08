@@ -15,38 +15,28 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
-	sumPossibleGames := 0
+	sum := 0
 
 	for scanner.Scan() {
 		gameLine := scanner.Text()
 		gameSets := strings.Split(gameLine, "; ")
-		isValidGame := true
-		gameNum := -1
+		power := 0
 		for index, gameInfo := range gameSets {
 			if index == 0 {
 				gameString := strings.TrimPrefix(gameInfo, "Game")
 				gameNumString := strings.TrimSpace(gameString[:strings.Index(gameString, ":")])
-				gameNum, err = strconv.Atoi(gameNumString)
 				gameInfo = strings.TrimPrefix(gameInfo, "Game "+gameNumString+": ")
 			}
-			if !isPossibleGame(gameInfo) {
-				isValidGame = false
-				break
-			}
+			power = minimumCubesNeededPower(gameInfo)
 		}
-		if isValidGame && gameNum != -1 {
-			sumPossibleGames += gameNum
-		}
+		sum += power
 	}
 
 	file.Close()
-	fmt.Println("Sum: " + strconv.Itoa(sumPossibleGames))
+	fmt.Println("Sum: " + strconv.Itoa(sum))
 }
 
-func isPossibleGame(gameInfo string) bool {
-	ALLOWED_RED := 12
-	ALLOWED_GREEN := 13
-	ALLOWED_BLUE := 14
+func minimumCubesNeededPower(gameInfo string) int {
 	gameReveal := strings.Split(gameInfo, ", ")
 	for _, game := range gameReveal {
 		gameNumColors := strings.Split(game, " ")
