@@ -20,23 +20,25 @@ func main() {
 	for scanner.Scan() {
 		gameLine := scanner.Text()
 		gameSets := strings.Split(gameLine, "; ")
-		power := 0
+		maxRed := 0
+		maxGreen := 0
+		maxBlue := 0
 		for index, gameInfo := range gameSets {
 			if index == 0 {
 				gameString := strings.TrimPrefix(gameInfo, "Game")
 				gameNumString := strings.TrimSpace(gameString[:strings.Index(gameString, ":")])
 				gameInfo = strings.TrimPrefix(gameInfo, "Game "+gameNumString+": ")
 			}
-			power = minimumCubesNeededPower(gameInfo)
+			getCubesNeeded(gameInfo, &maxRed, &maxGreen, &maxBlue)
 		}
-		sum += power
+		sum += (maxRed * maxGreen * maxBlue)
 	}
 
 	file.Close()
-	fmt.Println("Sum: " + strconv.Itoa(sum))
+	fmt.Println("Power: " + strconv.Itoa(sum))
 }
 
-func minimumCubesNeededPower(gameInfo string) int {
+func getCubesNeeded(gameInfo string, maxRed *int, maxGreen *int, maxBlue *int) {
 	gameReveal := strings.Split(gameInfo, ", ")
 	for _, game := range gameReveal {
 		gameNumColors := strings.Split(game, " ")
@@ -48,19 +50,18 @@ func minimumCubesNeededPower(gameInfo string) int {
 				check(err)
 			} else {
 				color := gameNumColor
-				if color == "red" && num > ALLOWED_RED {
-					return false
+				if color == "red" && num > *maxRed {
+					*maxRed = num
 				}
-				if color == "green" && num > ALLOWED_GREEN {
-					return false
+				if color == "green" && num > *maxGreen {
+					*maxGreen = num
 				}
-				if color == "blue" && num > ALLOWED_BLUE {
-					return false
+				if color == "blue" && num > *maxBlue {
+					*maxBlue = num
 				}
 			}
 		}
 	}
-	return true
 }
 
 func check(e error) {
