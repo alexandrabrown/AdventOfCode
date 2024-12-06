@@ -17,13 +17,16 @@ def check_differences(my_list):
         return True
     else:
         return False
+    
+def is_safe(my_list):
+    return (is_strictly_increasing(my_list) or is_strictly_decreasing(my_list)) and check_differences(my_list)
 
 def main():
     numSafe = 0
     with open('input.txt', 'r') as file:
         for line in file:
             my_list = [float(x) for x in line.split()]
-            if ((is_strictly_increasing(my_list) or is_strictly_decreasing(my_list)) and check_differences(my_list)):
+            if (is_safe(my_list)):
                 numSafe += 1
 
     print(numSafe)

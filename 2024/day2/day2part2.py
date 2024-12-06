@@ -17,14 +17,25 @@ def check_differences(my_list):
         return True
     else:
         return False
+    
+def is_safe(my_list):
+    return (is_strictly_increasing(my_list) or is_strictly_decreasing(my_list)) and check_differences(my_list)
 
 def main():
     numSafe = 0
     with open('input.txt', 'r') as file:
         for line in file:
             my_list = [float(x) for x in line.split()]
-            if ((is_strictly_increasing(my_list) or is_strictly_decreasing(my_list)) and check_differences(my_list)):
+            if (is_safe(my_list)):
                 numSafe += 1
+            else:
+                for i in range(len(my_list)):
+                    new_list = my_list[:i] + my_list[i+1:]
+                    if is_safe(new_list):
+                        numSafe += 1
+                        break
+                
+        new_list_options = my_list
 
     print(numSafe)
 
